@@ -24,6 +24,18 @@ namespace TestApplicationReact.Models.ManageViewModels
 		public string GithubAccount { get; set; }
 		public List<string> GithubRepositories { get; set; }
 		public List<string> AvailableRepositories { get; set; }
+	}
 
+	public class GithubRepositoryViewModel
+	{
+		public string Name { get; set; }
+		public string Owner { get; set; }
+		public bool IsSelected { get; set; }
+		public int? Id { get; set; }
+	}
+
+	public class UpdateGithubRepositoriesViewModel
+	{
+		public List<GithubRepositoryViewModel> RepositoryViewModels { get; set; }
 	}
 }

@@ -1,0 +1,19 @@
+﻿@model TestApplicationReact.Models.ManageViewModels.UpdateGithubRepositoriesViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Select Github Repositories</title>
+</head>
+<body>
+	<div>
+		@using (Html.BeginForm("UpdateRepositories", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+		{
+			@Html.AntiForgeryToken()
+			@Html.EditorFor(x => x.RepositoryViewModels)
+			<input type="submit" value="Update Repositories" class="btn btn-default" />
+		}
+	</div>
+</body>
+</html>
