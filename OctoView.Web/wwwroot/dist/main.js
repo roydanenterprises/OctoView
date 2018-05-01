@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b6aa1d560b9a6edb99f8"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d4a7e028da0def2bc4f3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -7675,6 +7675,8 @@ if (!module.hot || process.env.NODE_ENV === 'production') {
 /* WEBPACK VAR INJECTION */(function(process, module) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Features; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_isomorphic_fetch__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_isomorphic_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_isomorphic_fetch__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -7686,10 +7688,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 
+
 var Features = (function (_super) {
     __extends(Features, _super);
     function Features() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.state = { features: [], loading: true };
+        fetch('api/github/features')
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+            _this.setState({ features: data, loading: false });
+        });
+        return _this;
     }
     Features.prototype.render = function () {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -12181,6 +12191,13 @@ __webpack_require__(62);
 __webpack_require__(61);
 module.exports = __webpack_require__(60);
 
+
+/***/ }),
+/* 201 */,
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = (__webpack_require__(3))(99);
 
 /***/ })
 /******/ ]);
