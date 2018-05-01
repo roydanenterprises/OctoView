@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
-namespace GithubDashboard.Github.Models
+namespace OctoView.Github.Models
 {
 	public class GithubBranch
 	{

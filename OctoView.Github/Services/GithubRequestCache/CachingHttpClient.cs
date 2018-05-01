@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GithubDashboard.Github.Services.GithubRequestCache
+namespace OctoView.Github.Services.GithubRequestCache
 {
 	public class CachingHttpClient : IHttpClient
 	{

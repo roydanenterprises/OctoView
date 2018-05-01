@@ -1,0 +1,1 @@
+﻿https://garywoodfine.com/using-ef-core-in-a-separate-class-library-project/

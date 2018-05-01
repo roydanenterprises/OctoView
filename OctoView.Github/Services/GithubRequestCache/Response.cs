@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace GithubDashboard.Github.Services.GithubRequestCache
+namespace OctoView.Github.Services.GithubRequestCache
 {
 	public class Response : IResponse
 	{

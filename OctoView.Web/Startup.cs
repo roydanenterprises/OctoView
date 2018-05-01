@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OctoView.Github.Contexts;
+using OctoView.Github.Services;
+using OctoView.Github.Services.GithubRequestCache;
 using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
-using GithubDashboard.Github.Services;
 using TestApplicationReact.Data;
 using TestApplicationReact.Services;
 
@@ -27,10 +29,8 @@ namespace TestApplication
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-
-
-			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDbContext<GithubCacheContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddIdentity<ApplicationUser, IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
@@ -38,7 +38,8 @@ namespace TestApplication
 
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
-			services.AddSingleton<IGithubService, GithubService>();
+			services.AddTransient<IGithubService, GithubService>();
+			services.AddTransient<ICache, GithubRequestCacheService>();
 			services.AddMvc().AddSessionStateTempDataProvider();
 			services.AddSession();
 
@@ -51,14 +52,20 @@ namespace TestApplication
 		{
 			try
 			{
-				using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-					.CreateScope())
+				using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
 				{
 					var ctx = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
 
 					if (ctx.Database.GetPendingMigrations().Any())
 					{
 						ctx.Database.Migrate();
+					}
+
+					var githubContext = serviceScope.ServiceProvider.GetService<GithubCacheContext>();
+
+					if (githubContext.Database.GetPendingMigrations().Any())
+					{
+						githubContext.Database.Migrate();
 					}
 				}
 			}

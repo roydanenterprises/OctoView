@@ -1,4 +1,4 @@
-﻿using GithubDashboard.Github.Models;
+﻿using OctoView.Github.Models;
 
 namespace OctoView.Github.EventArgs
 {

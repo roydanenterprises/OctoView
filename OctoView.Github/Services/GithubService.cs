@@ -1,15 +1,15 @@
-﻿using GithubDashboard.Github.Models;
-using GithubDashboard.Github.Services.GithubRequestCache;
-using Octokit;
+﻿using Octokit;
 using Octokit.Internal;
+using OctoView.Github.EventArgs;
+using OctoView.Github.Models;
+using OctoView.Github.Services.GithubRequestCache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using OctoView.Github.EventArgs;
 
-namespace GithubDashboard.Github.Services
+namespace OctoView.Github.Services
 {
 	public interface IGithubService
 	{
@@ -33,11 +33,17 @@ namespace GithubDashboard.Github.Services
 
 	public class GithubService : IGithubService
 	{
+		private readonly ICache _cachingService;
 
 		private static readonly ApiOptions ApiOptions = new ApiOptions
 		{
 			PageSize = 100
 		};
+
+		public GithubService(ICache cachingService)
+		{
+			_cachingService = cachingService;
+		}
 
 		public event EventHandler<GithubLogEventArgs> Log;
 		public event EventHandler<GithubBranchUpdatedEvent> BranchUpdated;
@@ -58,15 +64,15 @@ namespace GithubDashboard.Github.Services
 			return GitHubClient().Oauth.GetGitHubLoginUrl(request);
 		}
 
-		private static GitHubClient GitHubClient()
+		private GitHubClient GitHubClient()
 		{
 			return new GitHubClient(new Connection(
 					new ProductHeaderValue("GithubDashboard"),
-					new CachingHttpClient(new HttpClientAdapter(HttpMessageHandlerFactory.CreateDefault), new GithubRequestCacheService())
+					new CachingHttpClient(new HttpClientAdapter(HttpMessageHandlerFactory.CreateDefault), _cachingService)
 				));
 		}
 
-		private static GitHubClient GitHubClient(string accessToken)
+		private GitHubClient GitHubClient(string accessToken)
 		{
 			var client = GitHubClient();
 			client.Credentials = new Credentials(accessToken);

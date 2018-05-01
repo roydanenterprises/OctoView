@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
-using GithubDashboard.Github.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Octokit;
+using OctoView.Github.Services;
 using OctoView.Web.Helpers;
 using OctoView.Web.Models;
 using System;
@@ -28,7 +22,6 @@ namespace OctoView.Web.Controllers
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IUserStore<ApplicationUser> _userStore;
-		private readonly IConfiguration _configuration;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
 			IGithubService githubService,
@@ -70,6 +63,7 @@ namespace OctoView.Web.Controllers
 			return result;
 		}
 
+		[HttpGet("BeginOauth")]
 		public ActionResult BeginOauth()
 		{
 			var csrf = Password.Generate(24, 1);
@@ -80,6 +74,7 @@ namespace OctoView.Web.Controllers
 			return Redirect(uri.ToString());
 		}
 
+		[HttpGet("Authorize")]
 		public async Task<ActionResult> Authorize(string code, string state)
 		{
 			if (string.IsNullOrEmpty(code))
@@ -93,7 +88,8 @@ namespace OctoView.Web.Controllers
 				throw new InvalidOperationException();
 			}
 
-			HttpContext.Session.SetString("CSRF:State", null);
+			HttpContext.Session.Remove("CSRF:State");
+
 			var token = await _githubService.GetOauthAccessToken(_configuration["AppSettings:GithubClientId"],
 				_configuration["AppSettings:GithubClientSecret"], code);
 			HttpContext.Session.SetString("OAuthToken", token.AccessToken);
@@ -102,6 +98,7 @@ namespace OctoView.Web.Controllers
 			return RedirectToAction("Index", "Manage");
 		}
 
+		[HttpGet("Unauthorize")]
 		public async Task<ActionResult> Unauthorize()
 		{
 			var claim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken");

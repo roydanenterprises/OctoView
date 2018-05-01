@@ -13,8 +13,4 @@
     <PackageReference Include="StructureMap" Version="4.6.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contexts\GithubCache\Migrations\" />
-  </ItemGroup>
-
 </Project>
