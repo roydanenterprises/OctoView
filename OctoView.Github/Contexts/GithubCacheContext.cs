@@ -5,12 +5,7 @@ namespace OctoView.Github.Contexts
 {
 	public class GithubCacheContext : DbContext
 	{
-		public GithubCacheContext()
-		{
-
-		}
-
-		public GithubCacheContext(DbContextOptions options) : base(options)
+		public GithubCacheContext(DbContextOptions<GithubCacheContext> options) : base(options)
 		{
 		}
 

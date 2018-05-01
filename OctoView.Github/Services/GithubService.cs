@@ -33,11 +33,17 @@ namespace OctoView.Github.Services
 
 	public class GithubService : IGithubService
 	{
+		private readonly ICache _cachingService;
 
 		private static readonly ApiOptions ApiOptions = new ApiOptions
 		{
 			PageSize = 100
 		};
+
+		public GithubService(ICache cachingService)
+		{
+			_cachingService = cachingService;
+		}
 
 		public event EventHandler<GithubLogEventArgs> Log;
 		public event EventHandler<GithubBranchUpdatedEvent> BranchUpdated;
@@ -58,15 +64,15 @@ namespace OctoView.Github.Services
 			return GitHubClient().Oauth.GetGitHubLoginUrl(request);
 		}
 
-		private static GitHubClient GitHubClient()
+		private GitHubClient GitHubClient()
 		{
 			return new GitHubClient(new Connection(
 					new ProductHeaderValue("GithubDashboard"),
-					new CachingHttpClient(new HttpClientAdapter(HttpMessageHandlerFactory.CreateDefault), new GithubRequestCacheService())
+					new CachingHttpClient(new HttpClientAdapter(HttpMessageHandlerFactory.CreateDefault), _cachingService)
 				));
 		}
 
-		private static GitHubClient GitHubClient(string accessToken)
+		private GitHubClient GitHubClient(string accessToken)
 		{
 			var client = GitHubClient();
 			client.Credentials = new Credentials(accessToken);
