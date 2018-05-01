@@ -1,30 +1,16 @@
-import * as React from 'react'; 
+import * as React from 'react';
+import {IPullRequest, PullRequest} from './PullRequest'
 
-interface IFeatureProperties {
-	name: string;
+export interface IFeature {
+	repo: string;
+	branchName: string;
 	renderType : string;
+	pulls: IPullRequest[];
 }
 
-interface IFeatureState {
-
-}
-
-export default class Feature extends
-React.Component<IFeatureProperties, IFeatureState> {
+export class Feature extends
+React.Component<IFeature, any> {
 	render() {
-		if (this.props.renderType === "table") {
-			return <tr>
-				       <td>
-					       {this.props.name}
-				       </td>
-				       Foo Data
-				       <td>
-				       </td>
-			       </tr>;
-		} else {
-			return <tr> Not a table {this.props.name}
-					
-			       </tr>;
-		}
+		return <div></div>;
 	}
 }

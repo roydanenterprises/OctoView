@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "14438ee01490c7a34b5b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "48727f55372911903037"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -7672,7 +7672,8 @@ if (!module.hot || process.env.NODE_ENV === 'production') {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process, module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* WEBPACK VAR INJECTION */(function(process, module) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Feature; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -7691,21 +7692,11 @@ var Feature = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Feature.prototype.render = function () {
-        if (this.props.renderType === "table") {
-            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("tr", null,
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("td", null, this.props.name),
-                "Foo Data",
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("td", null));
-        }
-        else {
-            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("tr", null,
-                " Not a table ",
-                this.props.name);
-        }
+        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null);
     };
     return Feature;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
-/* harmony default export */ __webpack_exports__["a"] = (Feature);
+
 
 
  ;(function register() { /* react-hot-loader/webpack */ if (process.env.NODE_ENV !== 'production') { if (typeof __REACT_HOT_LOADER__ === 'undefined') { return; } if (typeof module.exports === 'function') { __REACT_HOT_LOADER__.register(module.exports, 'module.exports', "C:\\SourceCode\\OctoView\\OctoView.Web\\ClientApp\\components\\Feature.tsx"); return; } for (var key in module.exports) { if (!Object.prototype.hasOwnProperty.call(module.exports, key)) { continue; } var namedExport = void 0; try { namedExport = module.exports[key]; } catch (err) { continue; } __REACT_HOT_LOADER__.register(namedExport, key, "C:\\SourceCode\\OctoView\\OctoView.Web\\ClientApp\\components\\Feature.tsx"); } } })();
@@ -7771,7 +7762,7 @@ var Features = (function (_super) {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("th", null, "Name"),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("th", null, "Foo data"))),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("tbody", null, features.map(function (feature) {
-                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__Feature__["a" /* default */], __assign({ renderType: "somethingelse" }, feature));
+                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__Feature__["a" /* Feature */], __assign({}, feature));
             })));
     };
     return Features;
