@@ -36,6 +36,6 @@ namespace TestApplicationReact.Models.ManageViewModels
 
 	public class UpdateGithubRepositoriesViewModel
 	{
-		public List<GithubRepositoryViewModel> RepositoryViewModels { get; set; }
+		public IList<GithubRepositoryViewModel> RepositoryViewModels { get; set; }
 	}
 }
