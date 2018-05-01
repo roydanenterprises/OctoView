@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoView.Github", "OctoView
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoView.Web", "OctoView.Web\OctoView.Web.csproj", "{8A6AB117-0065-48E1-9FDE-CD6D12C1C17B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoView.Github.Console", "OctoView.Github.Console\OctoView.Github.Console.csproj", "{838C4518-8EBE-4C07-8FAC-955C68C25B0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8A6AB117-0065-48E1-9FDE-CD6D12C1C17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A6AB117-0065-48E1-9FDE-CD6D12C1C17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A6AB117-0065-48E1-9FDE-CD6D12C1C17B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838C4518-8EBE-4C07-8FAC-955C68C25B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838C4518-8EBE-4C07-8FAC-955C68C25B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838C4518-8EBE-4C07-8FAC-955C68C25B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838C4518-8EBE-4C07-8FAC-955C68C25B0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

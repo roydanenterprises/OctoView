@@ -7,33 +7,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Octokit" Version="0.29.0" />
     <PackageReference Include="StructureMap" Version="4.6.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Contexts\GithubCache\Migrations\201709201142317_AddGithubRequestCache.Designer.cs">
-      <DependentUpon>201709201142317_AddGithubRequestCache.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Contexts\GithubCache\Migrations\201710021323079_ExpandRequestKey.Designer.cs">
-      <DependentUpon>201710021323079_ExpandRequestKey.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Contexts\GithubCache\Migrations\201709201142317_AddGithubRequestCache.resx">
-      <DependentUpon>201709201142317_AddGithubRequestCache.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Contexts\GithubCache\Migrations\201710021323079_ExpandRequestKey.resx">
-      <DependentUpon>201710021323079_ExpandRequestKey.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Contexts\GithubCache\Migrations\" />
   </ItemGroup>
 
 </Project>
