@@ -12,6 +12,12 @@ using Microsoft.Extensions.Configuration;
 using Octokit;
 using OctoView.Web.Helpers;
 using OctoView.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OctoView.Web.Controllers
 {
@@ -22,6 +28,7 @@ namespace OctoView.Web.Controllers
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IUserStore<ApplicationUser> _userStore;
+		private readonly IConfiguration _configuration;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
 			IGithubService githubService,
@@ -48,16 +55,18 @@ namespace OctoView.Web.Controllers
 		public async Task<object> GetBranches()
 		{
 			var token = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
+
 			var allRepos = await _githubService.GetAllRepositories(token);
-			var selectedRepos =
-				(await _userStore.FindByIdAsync(_userManager.GetUserId(HttpContext.User), new CancellationToken()))?.Repositories
-				.Select(x => x.RepositoryName)
+			var selectedRepos = (await _userStore.FindByIdAsync(_userManager.GetUserId(HttpContext.User), new CancellationToken()))?.Repositories.Select(x => x.RepositoryName)
 				.ToList();
+
 			var tasks = allRepos
 				.Where(x => selectedRepos?.Any(y => y == x.FullName) ?? false)
 				.AsParallel()
 				.Select(async x => await _githubService.CreateGithubBranches(token, x));
+
 			var result = (await Task.WhenAll(tasks)).SelectMany(x => x).ToList();
+
 			return result;
 		}
 
