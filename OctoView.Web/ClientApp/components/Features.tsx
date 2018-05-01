@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-import { Feature, IFeature } from './Feature';
+import * as FeatureComponent from './Feature';
 
 interface IFeatures {
-	features: IFeature[];
+	features: FeatureComponent.IFeature[];
 	loading: boolean;
 }
 
@@ -14,7 +14,7 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 		this.state = { features: [], loading: true };
 
 		fetch('api/github/fakeBranches')
-			.then(response => response.json() as Promise<IFeature[]>)
+			.then(response => response.json() as Promise<FeatureComponent.IFeature[]>)
 			.then(data => {
 				this.setState({ features: data, loading: false });
 			});
@@ -33,19 +33,9 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 		       </div>;
 	}
 
-	private static renderFeatures(features: IFeature[]) {
-		return <table className="table">
-			       <thead>
-			       <tr>
-				       <th>Name</th>
-				       <th>Foo data</th>
-			       </tr>
-			       </thead>
-			       <tbody>
-			       {features.map(feature =>
-				       <Feature {...feature}/>
-			       )}
-			       </tbody>
-		       </table>;
+	private static renderFeatures(features: FeatureComponent.IFeature[]) {
+		return <div>
+			{features.map(feature => <FeatureComponent.Feature layout="notTable" {...feature}/>)}
+		       </div>;
 	}
 }
