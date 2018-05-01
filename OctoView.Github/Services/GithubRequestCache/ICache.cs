@@ -1,7 +1,7 @@
 ﻿using Octokit;
 using System.Threading.Tasks;
 
-namespace GithubDashboard.Github.Services.GithubRequestCache
+namespace OctoView.Github.Services.GithubRequestCache
 {
 	public interface ICache
 	{

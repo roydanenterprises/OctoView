@@ -1,12 +1,12 @@
-﻿using GithubDashboard.Contexts.GithubCache.Models;
-using GithubDashboard.Github.Contexts.GithubCache;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Octokit;
+using OctoView.Github.Contexts;
+using OctoView.Github.Contexts.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GithubDashboard.Github.Services.GithubRequestCache
+namespace OctoView.Github.Services.GithubRequestCache
 {
 	public class GithubRequestCacheService : ICache
 	{

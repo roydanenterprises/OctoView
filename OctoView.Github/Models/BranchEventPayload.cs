@@ -1,6 +1,6 @@
 ﻿using Octokit;
 
-namespace GithubDashboard.Github.Models
+namespace OctoView.Github.Models
 {
 	public class BranchEventPayload : ActivityPayload
 	{

@@ -1,6 +1,6 @@
 using StructureMap;
 
-namespace GithubDashboard.Github.IoC
+namespace OctoView.Github.IoC
 {
 	public class GithubRegistry : Registry
 	{

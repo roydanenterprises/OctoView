@@ -1,15 +1,15 @@
-﻿using GithubDashboard.Github.Models;
-using GithubDashboard.Github.Services.GithubRequestCache;
-using Octokit;
+﻿using Octokit;
 using Octokit.Internal;
+using OctoView.Github.EventArgs;
+using OctoView.Github.Models;
+using OctoView.Github.Services.GithubRequestCache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using OctoView.Github.EventArgs;
 
-namespace GithubDashboard.Github.Services
+namespace OctoView.Github.Services
 {
 	public interface IGithubService
 	{

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GithubDashboard.Contexts.GithubCache.Models
+namespace OctoView.Github.Contexts.Models
 {
 	public class GithubRequest
 	{
