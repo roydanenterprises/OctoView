@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-export class Features extends React.Component<RouteComponentProps<{}>, {}> {
+interface IFeatureProperties {
+	name : string
+}
+
+interface IFeatureState {
+
+}
+
+export default class Feature extends
+React.Component<RouteComponentProps<IFeatureProperties>, IFeatureState> {
     public render() {
         return <div>
             

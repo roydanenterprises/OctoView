@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-
+import  Feature from './Feature';
 interface IFeatureData {
 	name: string;
 }
@@ -25,12 +25,16 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 	}
 
 	render() {
-		let contents = this.state.loading
-			? <p><em>Loading...</em></p>
+		const contents = this.state.loading
+			? <p>
+				  <em>Loading...</em>
+			  </p>
 			: Features.renderFeatures(this.state.features);
 
 		return <div>
-			       <h1>Features</h1>
+			<h1>Features</h1>
+		
+
 			       {contents}
 		       </div>;
 	}
@@ -39,15 +43,15 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 		return <table className="table">
 			       <thead>
 			       <tr>
-					<th>Name</th>
-					<th>Foo data</th>
+				       <th>Name</th>
+				       <th>Foo data</th>
 			       </tr>
 			       </thead>
 			       <tbody>
 				{features.map(feature =>
-					<tr key={feature.name}>
-						<td>{feature.name}</td>
-						<td>Foo Data</td>
+				       <tr key={feature.name}>
+					       <td>{feature.name}</td>
+					       <td>Foo Data</td>
 				       </tr>
 			       )}
 			       </tbody>

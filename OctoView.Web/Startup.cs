@@ -9,6 +9,7 @@ using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
+using GithubDashboard.Github.Services;
 using TestApplicationReact.Data;
 using TestApplicationReact.Services;
 
@@ -37,6 +38,7 @@ namespace TestApplication
 
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
+			services.AddSingleton<IGithubService, GithubService>();
 			services.AddMvc();
 
 			services.AddSignalR();
