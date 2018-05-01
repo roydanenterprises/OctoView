@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
@@ -37,6 +38,8 @@ namespace TestApplication
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddMvc();
+
+			services.AddSignalR();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +60,7 @@ namespace TestApplication
 			}
 			catch (Exception)
 			{
-				//Fail lord.
+				//Fail lord
 			}
 			if (env.IsDevelopment())
 			{
@@ -76,6 +79,7 @@ namespace TestApplication
 			app.UseAuthentication();
 			app.UseStaticFiles();
 
+			app.UseSignalR(x => { x.MapHub<GithubHub>("/signalr"); });
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
