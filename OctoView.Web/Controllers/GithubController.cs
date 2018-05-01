@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using GithubDashboard.Github.Services;
+﻿using GithubDashboard.Github.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Octokit;
+using Microsoft.Extensions.Configuration;
+using OctoView.Web.Helpers;
+using OctoView.Web.Hubs;
 using OctoView.Web.Models;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OctoView.Web.Controllers
 {
@@ -14,13 +20,18 @@ namespace OctoView.Web.Controllers
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IUserStore<ApplicationUser> _userStore;
+		private readonly IGithubService _githubService;
+		private readonly IConfiguration _configuration;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
-			IGithubService githubService, IUserStore<ApplicationUser> userStore)
+			IGithubService githubService,
+			IUserStore<ApplicationUser> userStore,
+			IConfiguration configuration)
 		{
 			_userManager = userManager;
 			_githubService = githubService;
 			_userStore = userStore;
+			_configuration = configuration;
 		}
 
 		[HttpGet("fakeBranches")]
@@ -49,9 +60,56 @@ namespace OctoView.Web.Controllers
 
 					var result = (await Task.WhenAll(tasks)).SelectMany(x => x).ToList();
 
-					new Task(() => result.ForEach(x => GithubHub.BranchUpdated(x.Repo, x))).Start();
+			return result;
+		}
 
-					return result;
-				}*/
+		public ActionResult BeginOauth()
+		{
+			var csrf = Password.Generate(24, 1);
+			HttpContext.Session.SetString("CSRF:State", csrf);
+
+			var clientId = _configuration["AppSettings:GithubClientId"];
+			var clientSecret = _configuration["AppSettings:GithubClientSecret"];
+			var uri = _githubService.GetOauthRequestUrl(clientId, clientSecret, csrf);
+
+			return Redirect(uri.ToString());
+		}
+
+		public async Task<ActionResult> Authorize(string code, string state)
+		{
+			if (string.IsNullOrEmpty(code))
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			var expectedState = HttpContext.Session.GetString("CSRF:State");
+			if (state != expectedState)
+			{
+				throw new InvalidOperationException();
+			}
+
+			HttpContext.Session.SetString("CSRF:State", null);
+
+			var token = await _githubService.GetOauthAccessToken(_configuration["AppSettings:GithubClientId"],
+				_configuration["AppSettings:GithubClientSecret"], code);
+
+			HttpContext.Session.SetString("OAuthToken", token.AccessToken);
+
+			await _userManager.AddClaimAsync(await _userManager.GetUserAsync(HttpContext.User), new Claim("GithubAccessToken", token.AccessToken));
+
+			return RedirectToAction("Index", "Manage");
+		}
+
+		public async Task<ActionResult> Unauthorize()
+		{
+			var claim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken");
+
+			if (claim != null)
+			{
+				await _userManager.RemoveClaimAsync(await _userManager.GetUserAsync(HttpContext.User), claim);
+			}
+
+			return RedirectToAction("Index", "Manage");
+		}
 	}
 }

@@ -39,9 +39,11 @@ namespace TestApplication
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddSingleton<IGithubService, GithubService>();
-			services.AddMvc();
+			services.AddMvc().AddSessionStateTempDataProvider();
+			services.AddSession();
 
 			services.AddSignalR();
+			services.AddSingleton(Configuration);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +82,7 @@ namespace TestApplication
 
 			app.UseAuthentication();
 			app.UseStaticFiles();
+			app.UseSession();
 
 			app.UseSignalR(x => { x.MapHub<GithubHub>("/signalr"); });
 			app.UseMvc(routes =>
