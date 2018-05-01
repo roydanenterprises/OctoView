@@ -1,24 +1,20 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-import  Feature from './Feature';
-interface IFeatureData {
-	name: string;
-}
+import { Feature, IFeature } from './Feature';
 
-interface IFeaturesState {
-	features: IFeatureData[];
+interface IFeatures {
+	features: IFeature[];
 	loading: boolean;
 }
 
-
-export class Features extends React.Component<RouteComponentProps<{}>, IFeaturesState> {
+export class Features extends React.Component<RouteComponentProps<{}>, IFeatures> {
 	constructor() {
 		super();
 		this.state = { features: [], loading: true };
 
 		fetch('api/github/fakeBranches')
-			.then(response => response.json() as Promise<IFeatureData[]>)
+			.then(response => response.json() as Promise<IFeature[]>)
 			.then(data => {
 				this.setState({ features: data, loading: false });
 			});
@@ -32,12 +28,12 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 			: Features.renderFeatures(this.state.features);
 
 		return <div>
-			<h1>Features</h1>
+			       <h1>Features</h1>
 			       {contents}
 		       </div>;
 	}
 
-	private static renderFeatures(features: IFeatureData[]) {
+	private static renderFeatures(features: IFeature[]) {
 		return <table className="table">
 			       <thead>
 			       <tr>
@@ -47,7 +43,7 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 			       </thead>
 			       <tbody>
 			       {features.map(feature =>
-					<Feature renderType="somethingelse" {...feature} />
+				       <Feature {...feature}/>
 			       )}
 			       </tbody>
 		       </table>;
