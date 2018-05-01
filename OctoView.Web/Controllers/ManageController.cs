@@ -558,7 +558,7 @@ namespace TestApplicationMvc.Controllers
 			user.Repositories = model.RepositoryViewModels.Where(x => x.IsSelected).Select(x => new ApplicationUserRepository
 			{
 				Id = x.Id ?? 0,
-				RepositoryName = x.Name
+				RepositoryName = $"{x.Owner}/{x.Name}"
 			}).ToList();
 
 			var result = await _userStore.UpdateAsync(user, new CancellationToken());
