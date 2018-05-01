@@ -33,8 +33,6 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 
 		return <div>
 			<h1>Features</h1>
-		
-
 			       {contents}
 		       </div>;
 	}
@@ -48,11 +46,8 @@ export class Features extends React.Component<RouteComponentProps<{}>, IFeatures
 			       </tr>
 			       </thead>
 			       <tbody>
-				{features.map(feature =>
-				       <tr key={feature.name}>
-					       <td>{feature.name}</td>
-					       <td>Foo Data</td>
-				       </tr>
+			       {features.map(feature =>
+					<Feature renderType="somethingelse" {...feature} />
 			       )}
 			       </tbody>
 		       </table>;
