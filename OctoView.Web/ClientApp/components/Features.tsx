@@ -11,7 +11,6 @@ interface IFeaturesState {
 	loading: boolean;
 }
 
-
 export class Features extends React.Component<RouteComponentProps<{}>, IFeaturesState> {
 	constructor() {
 		super();

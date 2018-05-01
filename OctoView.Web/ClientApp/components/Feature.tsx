@@ -1,8 +1,8 @@
 import * as React from 'react'; 
 
 interface IFeatureProperties {
-	name: string,
-	renderType : string
+	name: string;
+	renderType : string;
 }
 
 interface IFeatureState {
