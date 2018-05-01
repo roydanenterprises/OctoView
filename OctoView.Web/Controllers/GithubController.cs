@@ -18,6 +18,7 @@ namespace OctoView.Web.Controllers
 	[Route("api/github")]
 	public class GithubController : Controller
 	{
+		private readonly IConfiguration _configuration;
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IUserStore<ApplicationUser> _userStore;
@@ -68,11 +69,9 @@ namespace OctoView.Web.Controllers
 		{
 			var csrf = Password.Generate(24, 1);
 			HttpContext.Session.SetString("CSRF:State", csrf);
-
 			var clientId = _configuration["AppSettings:GithubClientId"];
 			var clientSecret = _configuration["AppSettings:GithubClientSecret"];
 			var uri = _githubService.GetOauthRequestUrl(clientId, clientSecret, csrf);
-
 			return Redirect(uri.ToString());
 		}
 
@@ -94,11 +93,9 @@ namespace OctoView.Web.Controllers
 
 			var token = await _githubService.GetOauthAccessToken(_configuration["AppSettings:GithubClientId"],
 				_configuration["AppSettings:GithubClientSecret"], code);
-
 			HttpContext.Session.SetString("OAuthToken", token.AccessToken);
-
-			await _userManager.AddClaimAsync(await _userManager.GetUserAsync(HttpContext.User), new Claim("GithubAccessToken", token.AccessToken));
-
+			await _userManager.AddClaimAsync(await _userManager.GetUserAsync(HttpContext.User),
+				new Claim("GithubAccessToken", token.AccessToken));
 			return RedirectToAction("Index", "Manage");
 		}
 
@@ -106,7 +103,6 @@ namespace OctoView.Web.Controllers
 		public async Task<ActionResult> Unauthorize()
 		{
 			var claim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken");
-
 			if (claim != null)
 			{
 				await _userManager.RemoveClaimAsync(await _userManager.GetUserAsync(HttpContext.User), claim);

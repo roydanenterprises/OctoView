@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import * as React from 'react'; 
 
 interface IFeatureProperties {
-	name : string
+	name: string,
+	renderType : string
 }
 
 interface IFeatureState {
@@ -10,10 +10,21 @@ interface IFeatureState {
 }
 
 export default class Feature extends
-React.Component<RouteComponentProps<IFeatureProperties>, IFeatureState> {
-    public render() {
-        return <div>
-            
-        </div>;
-    }
+React.Component<IFeatureProperties, IFeatureState> {
+	render() {
+		if (this.props.renderType === "table") {
+			return <tr>
+				       <td>
+					       {this.props.name}
+				       </td>
+				       Foo Data
+				       <td>
+				       </td>
+			       </tr>;
+		} else {
+			return <tr> Not a table {this.props.name}
+					
+			       </tr>;
+		}
+	}
 }
