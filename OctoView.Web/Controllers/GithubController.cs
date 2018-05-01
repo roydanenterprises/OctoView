@@ -34,7 +34,7 @@ namespace OctoView.Web.Controllers
 				.ToList();
 
 			var tasks = allRepos
-				.Where(x => selectedRepos.Any(y => y == x.FullName))
+				.Where(x => selectedRepos?.Any(y => y == x.FullName) ?? false)
 				.AsParallel()
 				.Select(async x => await _githubService.CreateGithubBranches(token, x));
 
