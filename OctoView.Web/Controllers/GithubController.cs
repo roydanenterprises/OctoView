@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Octokit;
 using OctoView.Web.Helpers;
-using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -20,7 +21,6 @@ namespace OctoView.Web.Controllers
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IUserStore<ApplicationUser> _userStore;
-		private readonly IGithubService _githubService;
 		private readonly IConfiguration _configuration;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
@@ -44,21 +44,21 @@ namespace OctoView.Web.Controllers
 			};
 		}
 
-		/*		[HttpGet("branches")]
-				public async Task<object> GetBranches()
-				{
-					var token = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
+		[HttpGet("branches")]
+		public async Task<object> GetBranches()
+		{
+			var token = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
 
-					var allRepos = await _githubService.GetAllRepositories(token);
-					var selectedRepos = (await _userStore.FindByIdAsync(_userManager.GetUserId(HttpContext.User), new CancellationToken()))?.Repositories.Select(x => x.RepositoryName)
-						.ToList();
+			var allRepos = await _githubService.GetAllRepositories(token);
+			var selectedRepos = (await _userStore.FindByIdAsync(_userManager.GetUserId(HttpContext.User), new CancellationToken()))?.Repositories.Select(x => x.RepositoryName)
+				.ToList();
 
-					var tasks = allRepos
-						.Where(x => selectedRepos?.Any(y => y == x.FullName) ?? false)
-						.AsParallel()
-						.Select(async x => await _githubService.CreateGithubBranches(token, x));
+			var tasks = allRepos
+				.Where(x => selectedRepos?.Any(y => y == x.FullName) ?? false)
+				.AsParallel()
+				.Select(async x => await _githubService.CreateGithubBranches(token, x));
 
-					var result = (await Task.WhenAll(tasks)).SelectMany(x => x).ToList();
+			var result = (await Task.WhenAll(tasks)).SelectMany(x => x).ToList();
 
 			return result;
 		}
