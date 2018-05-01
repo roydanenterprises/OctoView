@@ -22,7 +22,6 @@ namespace OctoView.Web.Controllers
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IUserStore<ApplicationUser> _userStore;
-		private readonly IConfiguration _configuration;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
 			IGithubService githubService,

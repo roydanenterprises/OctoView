@@ -1,6 +1,6 @@
-﻿using GithubDashboard.Github.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using OctoView.Github.Models;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
