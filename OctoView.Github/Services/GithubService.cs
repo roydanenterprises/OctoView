@@ -60,7 +60,7 @@ namespace OctoView.Github.Services
 
 		public List<GithubRepository> GetUserRepositories(string userId)
 		{
-			return _dataRepository.GetUserRepositories(userId);
+			return _dataRepository.GetUserRepositories(userId) ?? new List<GithubRepository>();
 		}
 
 		public bool UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos)
