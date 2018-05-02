@@ -22,7 +22,7 @@ namespace OctoView.Github.Services
 		Task<IReadOnlyList<PullRequestReview>> GetReviewsForPullRequest(string accessToken, string repoOwner, string repoName, int pullNumber);
 		Task<IEnumerable<GithubBranch>> CreateGithubBranches(string accessToken, Repository repo);
 		Uri GetOauthRequestUrl(string clientId, string clientSecret, string csrfToken);
-		Task<string> GetUsername(string accessToken);
+		Task<GithubUser> GetUser(string accessToken);
 		void ParseWebhookEvent(string action, string data);
 		void UpdatePullRequest(PullRequest pull);
 
@@ -104,7 +104,7 @@ namespace OctoView.Github.Services
 			var request = new OauthTokenRequest(clientId, clientSecret, code);
 			var token = await GitHubClient().Oauth.CreateAccessToken(request);
 
-			Trace.TraceInformation($"Token obtained for {await GetUsername(token.AccessToken)}");
+			Trace.TraceInformation($"Token obtained for {(await GetUser(token.AccessToken)).Username}");
 			return token;
 		}
 
@@ -174,6 +174,7 @@ namespace OctoView.Github.Services
 				Number = pull.Number,
 				Status = pull.State.StringValue,
 				Url = pull.HtmlUrl,
+				Assignee = pull.Assignee.Login,
 				Reviews = reviewers?.Select(x =>
 																		{
 																			var review = pullReviews?.Where(y => y.User.Login == x)
@@ -184,12 +185,14 @@ namespace OctoView.Github.Services
 																			{
 																				Name = x,
 																				Url = review?.HtmlUrl,
-																				Status = review?.State.StringValue
+																				Status = review?.State.StringValue,
+																				AvatarUrl = review?.User.AvatarUrl
 																			};
 																		}).Union(pull.RequestedReviewers.Select(x => new GithubReview
 																		{
 																			Name = x.Login,
-																			Status = "PENDING"
+																			Status = "PENDING",
+																			AvatarUrl = x.AvatarUrl
 																		})).ToList()
 			};
 		}
@@ -298,12 +301,14 @@ namespace OctoView.Github.Services
 				Number = pull.Number,
 				Status = pull.State.StringValue,
 				Url = pull.HtmlUrl,
+				Assignee = pull.Assignee.Login,
 				Reviews = pull
 					.RequestedReviewers
 					.Select(x => new GithubReview
 					{
 						Name = x.Login,
-						Status = "PENDING"
+						Status = "PENDING",
+						AvatarUrl = x.AvatarUrl
 					})
 					.ToList()
 			};
@@ -334,7 +339,8 @@ namespace OctoView.Github.Services
 			{
 				Name = review.User.Login,
 				Status = review.State.StringValue.ToUpper(),
-				Url = review.HtmlUrl
+				Url = review.HtmlUrl,
+				AvatarUrl = review.User.AvatarUrl
 			};
 
 			var repoName = pull.Head.Repository.FullName;
@@ -350,14 +356,20 @@ namespace OctoView.Github.Services
 			});
 		}
 
-		public async Task<string> GetUsername(string accessToken)
+		public async Task<GithubUser> GetUser(string accessToken)
 		{
 			if (string.IsNullOrWhiteSpace(accessToken))
 			{
-				return string.Empty;
+				return new GithubUser();
 			}
 
-			return (await GitHubClient(accessToken).User.Current()).Login;
+			var user = await GitHubClient(accessToken).User.Current();
+
+			return new GithubUser
+			{
+				Username = user.Login,
+				AvatarUrl = user.AvatarUrl
+			};
 		}
 	}
 }

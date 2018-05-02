@@ -72,7 +72,7 @@ namespace TestApplicationMvc.Controllers
 				StatusMessage = StatusMessage,
 				HasPassword = user.PasswordHash != null,
 				AvailableRepositories = (await _githubService.GetAllRepositories(githubToken))?.Select(x => x.FullName).ToList() ?? new List<string>(),
-				GithubAccount = await _githubService.GetUsername(githubToken),
+				GithubAccount = (await _githubService.GetUser(githubToken)).Username,
 				GithubRepositories = _githubService.GetUserRepositories(user.Id)?.Select(x => x.FullName).ToList(),
 				Logins = await _userManager.GetLoginsAsync(user)
 			};

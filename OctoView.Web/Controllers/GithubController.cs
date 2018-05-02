@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using OctoView.Github.Models;
 using OctoView.Github.Services;
 using OctoView.Web.Helpers;
 using OctoView.Web.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,89 +14,29 @@ using System.Threading.Tasks;
 namespace OctoView.Web.Controllers
 {
 	[Route("api/github")]
+	[Authorize]
 	public class GithubController : Controller
 	{
 		private readonly IConfiguration _configuration;
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IUserStore<ApplicationUser> _userStore;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
 			IGithubService githubService,
-			IUserStore<ApplicationUser> userStore,
 			IConfiguration configuration)
 		{
 			_userManager = userManager;
 			_githubService = githubService;
-			_userStore = userStore;
 			_configuration = configuration;
-		}
-
-		[HttpGet("fakeBranches")]
-		public object GetBranchesFake()
-		{
-			return new List<GithubBranch>
-			{
-				new GithubBranch
-				{
-					Repo = "Cool Stuff",
-					BranchName = "feature/testing1",
-					Pulls = new List<GithubPull>
-					{
-						new GithubPull
-						{
-							Name = "implement testing1 feature.",
-							Number = 125,
-							Status = "Open",
-							Reviews = new List<GithubReview>()
-						}
-					}
-				},
-				new GithubBranch
-				{
-					Repo = "Cool Stuff In other Repo",
-					BranchName = "feature/testing1",
-					Pulls = new List<GithubPull>
-					{
-						new GithubPull
-						{
-							Name = "implement testing1 feature.",
-							Number = 127,
-							Status = "Open",
-							Reviews = new List<GithubReview>()
-						}
-					}
-				},
-				new GithubBranch
-				{
-					Repo = "Not Very cool Stuff Stuff",
-					BranchName = "feature/testing2",
-					Pulls = new List<GithubPull>
-					{
-						new GithubPull
-						{
-							Name = "implement testing2 feature.",
-							Number = 34,
-							Status = "Open",
-							Reviews = new List<GithubReview>()
-							{
-								new GithubReview()
-								{
-									Name = "This guy",
-									Status = "Declined",
-									Url = "http://www.google.com"
-								}
-							}
-						}
-					}
-				}
-			};
 		}
 
 		[HttpGet("branches")]
 		public async Task<object> GetBranches()
 		{
-			var token = User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
+			var user = await _userManager.GetUserAsync(User);
+			var claims = await _userManager.GetClaimsAsync(user);
+
+			var token = claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
 			var allRepos = await _githubService.GetAllRepositories(token);
 			var selectedRepos = _githubService.GetUserRepositories(_userManager.GetUserId(User));
 
@@ -106,6 +45,19 @@ namespace OctoView.Web.Controllers
 				.AsParallel()
 				.Select(async x => await _githubService.CreateGithubBranches(token, x));
 			var result = (await Task.WhenAll(tasks)).SelectMany(x => x).ToList();
+			return result;
+		}
+
+		[HttpGet("user")]
+		public async Task<object> GetUser()
+		{
+			var user = await _userManager.GetUserAsync(User);
+			var claims = await _userManager.GetClaimsAsync(user);
+
+			var token = claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
+
+			var result = await _githubService.GetUser(token);
+
 			return result;
 		}
 
