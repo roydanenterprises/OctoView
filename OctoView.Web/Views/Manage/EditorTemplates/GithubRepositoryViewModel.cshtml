@@ -1,0 +1,15 @@
+﻿@model TestApplicationReact.Models.ManageViewModels.GithubRepositoryViewModel
+@{
+	Layout = null;
+}
+<div>
+	<span>
+		@Html.CheckBoxFor(x => x.IsSelected)
+	</span>
+	<span>
+		@Model.Owner/@Model.Name
+		@Html.HiddenFor(x => x.Owner)
+		@Html.HiddenFor(x => x.Name)
+		@Html.HiddenFor(x => x.Id)
+	</span>
+</div>
