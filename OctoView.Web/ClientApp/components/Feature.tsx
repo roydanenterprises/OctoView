@@ -22,13 +22,13 @@ export interface IFeature {
 export class Feature extends
 React.Component<IFeature, any> {
 	render() {
-		if (props.layout === 'table') {
+		if (this.props.layout === 'table') {
 			return <div>
-				       <div>{props.repo}</div>
+				       <div>{this.props.repo}</div>
 			       </div>;
 		}
 		return <div>
-			       <div>{props.repo}</div>
+			       <div>{this.props.repo}</div>
 		       </div>;
 	}
 }
