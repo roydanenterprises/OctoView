@@ -10,7 +10,6 @@
         "unread drawer drawer";
     margin: 1em 0 1.25em 10px;
     border-radius: $border-radius;
-    cursor: pointer;
     @include noselect();
 }
 
@@ -42,6 +41,11 @@
     background: linear-gradient(mix($card-background, $base-color, 35), $base-color 40%);
 }
 
+@mixin badge-background($base-color) {
+    background: $base-color;
+    box-shadow: inset 0px 3px 3px mix($card-text, $base-color, 15);
+}
+
 .ov-c-branch--unread .ov-c-branch__left-indicator {
     @include indicator-background(#069);
 }
@@ -57,11 +61,29 @@
 .ov-c-branch__name {
     grid-area: header;
     font-size: 2em;
+    cursor: pointer;
 }
 
 .ov-c-branch__approval-indicator {
     grid-area: indicator;
     border-top-right-radius: $border-radius;
+    text-align: right;
+    cursor: pointer;
+}
+
+.ov-c-branch__approval-badge {
+    @include badge-background($card-text);
+    color: $card-background;
+    font-size: 1.5em;
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 50px;
+    margin: .5em .5em 0 0;
+}
+
+.ov-c-branch--fixed .ov-c-branch__approval-badge {
+    @include badge-background(mix($card-background, $card-text, 95));
+    color: $card-text;
 }
 
 .ov-c-branch__pull-request-drawer {
@@ -73,7 +95,17 @@
     box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 90);
     @include grid-card-bottom();
     transition: all 0.2s ease;
+    cursor: pointer;
 }
+
+.ov-c-branch.ov-c-branch--opened .ov-c-branch__pull-request-drawer, 
+.ov-c-branch.ov-c-branch--fixed .ov-c-branch__pull-request-drawer,
+.ov-c-branch.ov-c-branch--fixed .ov-c-branch__approval-indicator,
+.ov-c-branch.ov-c-branch--fixed .ov-c-branch__name
+{
+    cursor: inherit;
+}
+
 
 .ov-c-branch__pull-request-drawer-contents {
     display: none;
@@ -83,7 +115,7 @@
     display: inherit;
 }
 
-.ov-c-branch:hover .ov-c-branch__pull-request-drawer {
+.ov-c-branch:not(.ov-c-branch--fixed):not(.ov-c-branch--opened):hover .ov-c-branch__pull-request-drawer {
     background: mix($card-background, $card-text, 85);
     box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 80);
 }
