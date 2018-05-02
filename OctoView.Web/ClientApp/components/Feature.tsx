@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IPullRequest } from './PullRequest'
+import {IPullRequest, PullRequest } from './PullRequest'
 
 export interface IFeature {
 	repo: string;
@@ -28,7 +28,10 @@ React.Component<IFeature, any> {
 			       </div>;
 		}
 		return <div>
-			       <div>{this.props.repo}</div>
+			       <div>{this.props.branchName}</div>
+			       <div>
+				       {this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
+			       </div>;
 		       </div>;
 	}
 }
