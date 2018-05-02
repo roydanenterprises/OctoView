@@ -27,11 +27,15 @@ React.Component<IBranch, any> {
 				       <div>{this.props.repo}</div>
 			       </div>;
 		}
-		return <div>
-			       <div>{this.props.branchName}</div>
-			       <div>
-				       {this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
-			       </div>
+		return <div className="ov-c-branch">
+					<div className="ov-c-branch__left-indicator"></div>
+			    	<div className="ov-c-branch__name">{this.props.branchName}</div>
+					<div className="ov-c-branch__approval-indicator"></div>
+			    	<div className="ov-c-branch__pull-request-drawer">
+						<div className="ov-c-branch__pull-request-drawer-contents">
+							{this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
+						</div>
+			    	</div>
 		       </div>;
 	}
 }

@@ -1,0 +1,68 @@
+@import "../foundations/_cards.scss";
+@import "../foundations/_variables.scss";
+
+.ov-c-branch {
+    display: grid;
+    grid-template-columns: 10px auto 150px;
+    grid-template-rows: auto 20px;
+    grid-template-areas:
+        "unread header indicator"
+        "unread drawer drawer";
+    margin: 1em 0 1.25em 10px;
+    border-radius: $border-radius;
+    @include grid-card-bottom();
+}
+
+.ov-c-branch--unread, .ov-c-branch--blocked, .ov-c-branch--approved {
+    grid-template-columns: 20px auto 150px;
+    margin-left: 0px;
+}
+
+.ov-c-branch__left-indicator, .ov-c-branch__name, .ov-c-branch__approval-indicator, .ov-c-branch__pull-request-drawer{
+    @include grid-card-base();
+}
+
+.ov-c-branch__left-indicator {
+    grid-area: unread;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+}
+
+@mixin indicator-background($base-color) {
+    background: linear-gradient(mix($card-background, $base-color, 35), $base-color 40%);
+}
+
+.ov-c-branch--unread .ov-c-branch__left-indicator {
+    @include indicator-background(#069);
+}
+
+.ov-c-branch--blocked .ov-c-branch__left-indicator {
+    @include indicator-background(#930);
+}
+
+.ov-c-branch--approved .ov-c-branch__left-indicator {
+    @include indicator-background(#3a0);
+}
+
+.ov-c-branch__name {
+    grid-area: header;
+    font-size: 2em;
+}
+
+.ov-c-branch__approval-indicator {
+    grid-area: indicator;
+    border-top-right-radius: $border-radius;
+}
+
+.ov-c-branch__pull-request-drawer {
+    grid-area: drawer;
+    overflow:hidden;    
+    border-bottom-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+    background: mix($card-background, $card-text, 95);
+    box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 90);
+}
+
+.ov-c-branch__pull-request-drawer-contents {
+    display: none;
+}

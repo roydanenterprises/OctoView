@@ -238,3 +238,9 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+
+OctoView.Web/wwwroot/dist/main.js
+OctoView.Web/wwwroot/dist/main.js.map
+OctoView.Web/wwwroot/dist/main.*.css
+OctoView.Web/wwwroot/dist/main.*.css.map

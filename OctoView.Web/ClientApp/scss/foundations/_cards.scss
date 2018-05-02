@@ -1,0 +1,20 @@
+@import "_variables.scss";
+
+@mixin card-base() {
+    background: $card-background;
+    color: $card-text;
+    padding: $border-radius;
+    border-radius: $border-radius;
+    margin: 1em 0 1.25em;
+    box-shadow: 0 .25em 0 rgba(0,0,0,.05);
+}
+
+@mixin grid-card-base() {
+    background: $card-background;
+    color: $card-text;
+    padding: $border-radius;
+}
+
+@mixin grid-card-bottom() {
+    box-shadow: 0 .25em 0 rgba(0,0,0,.05);
+}
