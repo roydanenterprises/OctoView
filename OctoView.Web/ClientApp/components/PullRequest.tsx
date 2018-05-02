@@ -7,7 +7,6 @@ export interface IPullRequest {
 	status: string;
 	url: string;
 	assignee: string;
-	url:string;
 	reviews: ICodeReview[];
 }
 
