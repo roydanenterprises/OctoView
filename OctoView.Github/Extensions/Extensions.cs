@@ -1,13 +1,12 @@
 ﻿using Octokit;
-using OctoView.Github.Models;
+using OctoView.Github.Contexts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OctoView.Github.Contexts.Models;
 
 namespace OctoView.Github.Extensions
 {
-	public static class Extensions
+	public static partial class Extensions
 	{
 		public static GithubRepository ToGithubRepository(this Repository repo)
 		{
