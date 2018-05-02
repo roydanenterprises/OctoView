@@ -23,22 +23,38 @@ module.exports = (env) => {
 		plugins: [new CheckerPlugin()]
 	});
 
+	const extractSass = new ExtractTextPlugin({
+		filename: "[name].[contenthash].css",
+		disable: process.env.NODE_ENV === "development"
+	});
+
 	// Configuration for client-side bundle suitable for running in browsers
 	const clientBundleOutputDir = './wwwroot/dist';
 	const clientBundleConfig = merge(sharedConfig(), {
 		entry: { 'main': './ClientApp/boot.tsx' },
 		module: {
 			rules: [
-				{ test: /\.css$/, use: ExtractTextPlugin.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
+				{
+					test: /\.scss$/,
+					use: extractSass.extract({
+						use: [{
+							loader: "css-loader"
+						}, {
+							loader: "sass-loader"
+						}],
+						// use style-loader in development
+						fallback: "style-loader"
+					})
+				}
 			]
 		},
 		output: { path: path.join(__dirname, clientBundleOutputDir) },
 		plugins: [
-			new ExtractTextPlugin('site.css'),
 			new webpack.DllReferencePlugin({
 				context: __dirname,
 				manifest: require('./wwwroot/dist/vendor-manifest.json')
-			})
+			}),
+			extractSass
 		].concat(isDevBuild ? [
 			// Plugins that apply in development builds only
 			new webpack.SourceMapDevToolPlugin({
