@@ -4,7 +4,7 @@ export interface ICodeReview {
 	name: string;
 	status?: string;
 	url?: string;
-	imgUrl?: string;
+	avatarUrl?: string;
 }
 
 export interface ICodeReviewState {

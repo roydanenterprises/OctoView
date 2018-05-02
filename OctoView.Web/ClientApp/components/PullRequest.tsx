@@ -18,12 +18,12 @@ React.Component<IPullRequest, any> {
 		console.log('rendered pull request.');
 
 		return <div className="ov-c-pull-request">
-				   <div>
+				   <div className="ov-c-pull-request__name">
 						<a href={this.props.url}>
 					   		{this.props.name} <span className="ov-c-pull-request__number">{this.props.number}</span>
 						</a>
 					</div>
-			       <div>
+			       <div className="ov-c-pull-request__review-container">
 				       {this.props.reviews.map(review => <CodeReview {...review}/>)}
 			       </div>
 		       </div>;
