@@ -10,7 +10,7 @@ namespace OctoView.Github.Repositories
 	public interface IGithubDataRepository
 	{
 		List<GithubRepository> GetUserRepositories(string userId);
-		Task<bool> UpdateUserRepositories(string userId, List<GithubRepository> repos);
+		bool UpdateUserRepositories(string userId, List<GithubRepository> repos);
 	}
 
 	public class GithubDataRepository : IGithubDataRepository
@@ -27,15 +27,24 @@ namespace OctoView.Github.Repositories
 			return _context.Users.FirstOrDefault(x => x.UserId == userId).UserRepositories.Select(x => x.Repository).ToList();
 		}
 
-		public Task<bool> UpdateUserRepositories(string userId, List<GithubRepository> repos)
+		public bool UpdateUserRepositories(string userId, List<GithubRepository> repos)
 		{
 			var existingList = GetUserRepositories(userId);
 
 			var deleted = existingList.Except(repos, x => x.FullName).ToList();
 			var added = repos.Except(existingList, x => x.FullName).ToList();
 
-			deleted.ForEach(x => existingList.Remove(x));
+			var reposToAdd = added.Where(x => x.Id == 0).ToList();
+			if (reposToAdd.Any())
+			{
+				_context.Set<GithubRepository>().AddRange(reposToAdd);
+			}
 
+			_context.Set<UserRepository>().RemoveRange(deleted.Select(x => new UserRepository{ UserId = userId, RepositoryId = x.Id }));
+			
+
+			//deleted.ForEach(x => existingList.Remove(x));
+			//_context.Set<GithubRepository>().Remo
 
 			throw new System.NotImplementedException();
 		}

@@ -33,7 +33,7 @@ namespace OctoView.Github.Services
 		event EventHandler<GithubPullReviewUpdatedEvent> PullReviewUpdated;
 
 		List<GithubRepository> GetUserRepositories(string userId);
-		Task<bool> UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos);
+		bool UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos);
 	}
 
 	public class GithubService : IGithubService
@@ -63,9 +63,9 @@ namespace OctoView.Github.Services
 			return _dataRepository.GetUserRepositories(userId);
 		}
 
-		public async Task<bool> UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos)
+		public bool UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos)
 		{
-			return await _dataRepository.UpdateUserRepositories(userId, repos);
+			return _dataRepository.UpdateUserRepositories(userId, repos.ToList());
 		}
 
 		public Uri GetOauthRequestUrl(string clientId, string clientSecret, string csrfToken)

@@ -554,8 +554,7 @@ namespace TestApplicationMvc.Controllers
 				throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 			}
 
-			var result =
-				await _githubService.UpdateUserRepositories(user.Id, model.RepositoryViewModels.Where(x => x.IsSelected).Select(x => x.ToGithubRepository()));
+			var result = _githubService.UpdateUserRepositories(user.Id, model.RepositoryViewModels.Where(x => x.IsSelected).Select(x => x.ToGithubRepository()));
 
 			if (result)
 			{
