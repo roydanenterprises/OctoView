@@ -23,10 +23,10 @@ namespace TestApplicationReact.Controllers
 		private readonly ILogger _logger;
 
 		public AccountController(
-				UserManager<ApplicationUser> userManager,
-				SignInManager<ApplicationUser> signInManager,
-				IEmailSender emailSender,
-				ILogger<AccountController> logger)
+			UserManager<ApplicationUser> userManager,
+			SignInManager<ApplicationUser> signInManager,
+			IEmailSender emailSender,
+			ILogger<AccountController> logger)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;

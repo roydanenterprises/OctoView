@@ -1,7 +1,9 @@
 ﻿using Octokit;
 using Octokit.Internal;
+using OctoView.Github.Contexts.Models;
 using OctoView.Github.EventArgs;
 using OctoView.Github.Models;
+using OctoView.Github.Repositories;
 using OctoView.Github.Services.GithubRequestCache;
 using System;
 using System.Collections.Generic;
@@ -29,20 +31,25 @@ namespace OctoView.Github.Services
 		event EventHandler<GithubBranchDeletedEvent> BranchDeleted;
 		event EventHandler<GithubPullUpdatedEvent> PullUpdated;
 		event EventHandler<GithubPullReviewUpdatedEvent> PullReviewUpdated;
+
+		List<GithubRepository> GetUserRepositories(string userId);
+		Task<bool> UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos);
 	}
 
 	public class GithubService : IGithubService
 	{
 		private readonly ICache _cachingService;
+		private readonly IGithubDataRepository _dataRepository;
 
 		private static readonly ApiOptions ApiOptions = new ApiOptions
 		{
 			PageSize = 100
 		};
 
-		public GithubService(ICache cachingService)
+		public GithubService(ICache cachingService, IGithubDataRepository dataRepository)
 		{
 			_cachingService = cachingService;
+			_dataRepository = dataRepository;
 		}
 
 		public event EventHandler<GithubLogEventArgs> Log;
@@ -50,6 +57,16 @@ namespace OctoView.Github.Services
 		public event EventHandler<GithubBranchDeletedEvent> BranchDeleted;
 		public event EventHandler<GithubPullUpdatedEvent> PullUpdated;
 		public event EventHandler<GithubPullReviewUpdatedEvent> PullReviewUpdated;
+
+		public List<GithubRepository> GetUserRepositories(string userId)
+		{
+			return _dataRepository.GetUserRepositories(userId);
+		}
+
+		public async Task<bool> UpdateUserRepositories(string userId, IEnumerable<GithubRepository> repos)
+		{
+			return await _dataRepository.UpdateUserRepositories(userId, repos);
+		}
 
 		public Uri GetOauthRequestUrl(string clientId, string clientSecret, string csrfToken)
 		{

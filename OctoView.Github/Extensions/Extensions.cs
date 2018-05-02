@@ -3,6 +3,7 @@ using OctoView.Github.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OctoView.Github.Contexts.Models;
 
 namespace OctoView.Github.Extensions
 {
