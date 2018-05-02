@@ -4,7 +4,7 @@ import 'isomorphic-fetch';
 import * as BranchComponent from './Branch';
 import { Branch } from './Branch';
 import { PullRequest } from 'ClientApp/components/PullRequest';
-import { CodeReview } from './CodeReview';
+import { CodeReview, ICodeReview } from './CodeReview';
 
 interface IBranches {
 	branches: BranchComponent.IBranch[];
@@ -48,6 +48,16 @@ export class Branches extends React.Component<RouteComponentProps<{}>, IBranches
 		if (this.state.filter === 'assignToMe') {
 			localBranches = localBranches.filter(branch => {
 				return branch.pulls.some(pull => pull.assignee === this.state.user.username);
+			});
+		}
+		if (this.state.filter === 'involvingMe') {
+			localBranches = localBranches.filter(branch => {
+				return branch.pulls.some(pull => { return pull.reviews.some(review => review.name === this.state.user.username) })
+			});
+		}
+		if (this.state.filter === 'toDo') {
+			localBranches = localBranches.filter(branch => {
+				return branch.pulls.some(pull => { return (pull.reviews.some(review => review.name === this.state.user.username) && (pull.reviews.some(review => review.status != "Approved"))) })
 			});
 		}
 		return <div>
