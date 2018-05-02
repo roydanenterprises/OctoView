@@ -42,6 +42,11 @@
     background: linear-gradient(mix($card-background, $base-color, 35), $base-color 40%);
 }
 
+@mixin badge-background($base-color) {
+    background: $base-color;
+    box-shadow: inset 0px 3px 3px mix($card-text, $base-color, 15);
+}
+
 .ov-c-branch--unread .ov-c-branch__left-indicator {
     @include indicator-background(#069);
 }
@@ -62,6 +67,22 @@
 .ov-c-branch__approval-indicator {
     grid-area: indicator;
     border-top-right-radius: $border-radius;
+    text-align: right;
+}
+
+.ov-c-branch__approval-badge {
+    @include badge-background($card-text);
+    color: $card-background;
+    font-size: 1.5em;
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 50px;
+    margin: .5em .5em 0 0;
+}
+
+.ov-c-branch--fixed .ov-c-branch__approval-badge {
+    @include badge-background(mix($card-background, $card-text, 95));
+    color: $card-text;
 }
 
 .ov-c-branch__pull-request-drawer {
@@ -83,7 +104,7 @@
     display: inherit;
 }
 
-.ov-c-branch:hover .ov-c-branch__pull-request-drawer {
+.ov-c-branch:not(.ov-c-branch--fixed):hover .ov-c-branch__pull-request-drawer {
     background: mix($card-background, $card-text, 85);
     box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 80);
 }
