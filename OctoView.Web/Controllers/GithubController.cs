@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,21 +16,19 @@ using System.Threading.Tasks;
 namespace OctoView.Web.Controllers
 {
 	[Route("api/github")]
+	[Authorize]
 	public class GithubController : Controller
 	{
 		private readonly IConfiguration _configuration;
 		private readonly IGithubService _githubService;
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IUserStore<ApplicationUser> _userStore;
 
 		public GithubController(UserManager<ApplicationUser> userManager,
 			IGithubService githubService,
-			IUserStore<ApplicationUser> userStore,
 			IConfiguration configuration)
 		{
 			_userManager = userManager;
 			_githubService = githubService;
-			_userStore = userStore;
 			_configuration = configuration;
 		}
 
@@ -97,7 +96,10 @@ namespace OctoView.Web.Controllers
 		[HttpGet("branches")]
 		public async Task<object> GetBranches()
 		{
-			var token = User.Claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
+			var user = await _userManager.GetUserAsync(User);
+			var claims = await _userManager.GetClaimsAsync(user);
+
+			var token = claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
 			var allRepos = await _githubService.GetAllRepositories(token);
 			var selectedRepos = _githubService.GetUserRepositories(_userManager.GetUserId(User));
 

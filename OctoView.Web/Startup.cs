@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OctoView.Github.Contexts;
+using OctoView.Github.Repositories;
 using OctoView.Github.Services;
 using OctoView.Github.Services.GithubRequestCache;
 using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
-using OctoView.Github.Repositories;
 using TestApplicationReact.Data;
 using TestApplicationReact.Services;
 
@@ -32,6 +32,7 @@ namespace TestApplication
 		{
 			services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDbContext<GithubCacheContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddTransient(x => new DbContextOptionsBuilder<GithubCacheContext>().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).Options);
 
 			services.AddIdentity<ApplicationUser, IdentityRole>(x =>
 																													{

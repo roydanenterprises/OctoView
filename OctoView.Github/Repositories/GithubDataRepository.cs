@@ -23,24 +23,45 @@ namespace OctoView.Github.Repositories
 
 		public List<GithubRepository> GetUserRepositories(string userId)
 		{
-			return _context.Users.FirstOrDefault(x => x.UserId == userId).UserRepositories.Select(x => x.Repository).ToList();
+			return _context.Set<UserRepository>().Where(x => x.UserId == userId)?.Select(x => x.Repository).ToList() ??
+						 new List<GithubRepository>();
 		}
 
 		public bool UpdateUserRepositories(string userId, List<GithubRepository> repos)
 		{
+			var user = _context.Users.FirstOrDefault(x => x.UserId == userId);
+
+			if (user == null)
+			{
+				_context.Set<User>().Add(new User { UserId = userId });
+				_context.SaveChanges();
+			}
+
 			var existingList = GetUserRepositories(userId);
 
-			var deleted = existingList.Except(repos, x => x.FullName).ToList();
-			var added = repos.Except(existingList, x => x.FullName).ToList();
+			var deleted = existingList?.Except(repos, x => x.FullName)?.ToList() ?? new List<GithubRepository>();
+			var added = repos?.Except(existingList, x => x.FullName)?.ToList() ?? new List<GithubRepository>();
+
+			foreach (var add in added)
+			{
+				var y = _context.Repositories.FirstOrDefault(x => x.FullName == add.FullName);
+				if (y != null)
+				{
+					add.Id = y.Id;
+				}
+			}
 
 			var reposToAdd = added.Where(x => x.Id == 0).ToList();
 			if (reposToAdd.Any())
 			{
 				_context.Set<GithubRepository>().AddRange(reposToAdd);
+				_context.SaveChanges();
 			}
 
-			_context.Set<UserRepository>().AddRange(added.Select(x => new UserRepository { UserId = userId, RepositoryId = x.Id }));
-			_context.Set<UserRepository>().RemoveRange(deleted.Select(x => new UserRepository { UserId = userId, RepositoryId = x.Id }));
+			_context.Set<UserRepository>().AddRange(added.Select(x => new UserRepository { User = user, Repository = x }));
+			_context.Set<UserRepository>().RemoveRange(deleted.Select(x => new UserRepository { User = user, Repository = x }));
+
+			_context.SaveChanges();
 
 			return true;
 		}

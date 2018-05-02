@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d378fbd648f1ce4111f2"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "42858fb79206f456aef9"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -7765,7 +7765,7 @@ var Branches = (function (_super) {
     function Branches() {
         var _this = _super.call(this) || this;
         _this.state = { branches: [], loading: true };
-        fetch('api/github/fakeBranches')
+        fetch('api/github/branches', { credentials: 'same-origin' })
             .then(function (response) { return response.json(); })
             .then(function (data) {
             _this.setState({ branches: data, loading: false });

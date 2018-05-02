@@ -13,7 +13,7 @@ export class Branches extends React.Component<RouteComponentProps<{}>, IBranches
 		super();
 		this.state = { branches: [], loading: true };
 
-		fetch('api/github/fakeBranches')
+		fetch('api/github/branches', {credentials: 'same-origin'})
 			.then(response => response.json() as Promise<BranchComponent.IBranch[]>)
 			.then(data => {
 				this.setState({ branches: data, loading: false });
