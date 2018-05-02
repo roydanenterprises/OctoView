@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { Features } from './components/Features';
+import { Branches } from './components/Branches';
 
 export const routes = <Layout>
-	<Route exact path='/' component={Features} />
+	<Route exact path='/' component={Branches} />
 
 </Layout>;

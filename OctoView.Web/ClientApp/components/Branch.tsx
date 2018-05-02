@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IPullRequest, PullRequest } from './PullRequest'
 
-export interface IFeature {
+export interface IBranch {
 	repo: string;
 	branchName: string;
 	layout: string;
@@ -19,8 +19,8 @@ export interface IFeature {
 	       </div>;
 };*/
 
-export class Feature extends
-React.Component<IFeature, any> {
+export class Branch extends
+React.Component<IBranch, any> {
 	render() {
 		if (this.props.layout === 'table') {
 			return <div>
