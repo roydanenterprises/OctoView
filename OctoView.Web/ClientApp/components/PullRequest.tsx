@@ -5,6 +5,7 @@ export interface IPullRequest {
 	name: string;
 	number: number;
 	status: string;
+	assignee: string;
 	reviews: ICodeReview[];
 }
 
