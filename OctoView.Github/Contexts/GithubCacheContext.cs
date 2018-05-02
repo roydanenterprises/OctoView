@@ -13,6 +13,10 @@ namespace OctoView.Github.Contexts
 		public DbSet<GithubRepository> Repositories { get; set; }
 		public DbSet<User> Users { get; set; }
 
+		public DbSet<CachedBranch> CachedBranches { get; set; }
+		public DbSet<CachedPull> CachedPulls { get; set; }
+		public DbSet<CachedReview> CachedReviews { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<GithubRepository>()

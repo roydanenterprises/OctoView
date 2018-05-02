@@ -11,9 +11,10 @@ using System;
 namespace OctoView.Github.Migrations
 {
     [DbContext(typeof(GithubCacheContext))]
-    partial class GithubCacheContextModelSnapshot : ModelSnapshot
+    [Migration("20180502204639_AddCachingModels")]
+    partial class AddCachingModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
