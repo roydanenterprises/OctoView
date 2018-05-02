@@ -29,7 +29,11 @@ export class Branch extends
 		this.setState({ isOpen: false });
 	}
 	toggleState() {
-		this.setState({ isOpen: !this.state.isOpen });
+		if (this.props.pulls.length !== 0) {
+			this.setState({ isOpen: !this.state.isOpen });
+		} else {
+			this.setState({ isOpen: false });
+		}
 	}
 	render() {
 		
@@ -37,6 +41,9 @@ export class Branch extends
 		if (this.state.isOpen) {
 		  className += ' ov-c-branch--opened';
 		}
+		if (this.props.pulls.length === 0) {
+			className += ' ov-c-branch--fixed';
+		}		
 
 		if (this.props.layout === 'table') {
 			return <div>
@@ -46,7 +53,9 @@ export class Branch extends
 		return <div onClick={() => this.toggleState()} className={className}>
 					<div className="ov-c-branch__left-indicator"></div>
 			    	<div className="ov-c-branch__name">{this.props.branchName}</div>
-			<div className="ov-c-branch__approval-indicator"></div>
+					<div className="ov-c-branch__approval-indicator">
+						<span className="ov-c-branch__approval-badge">0 / {this.props.pulls.length}</span>
+					</div>
 			    	<div className="ov-c-branch__pull-request-drawer">
 						<div className="ov-c-branch__pull-request-drawer-contents">
 							{this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
