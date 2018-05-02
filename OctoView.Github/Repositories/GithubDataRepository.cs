@@ -33,7 +33,12 @@ namespace OctoView.Github.Repositories
 
 			if (user == null)
 			{
-				_context.Set<User>().Add(new User { UserId = userId });
+				user = new User
+				{
+					UserId = userId
+				};
+
+				_context.Users.Add(user);
 				_context.SaveChanges();
 			}
 
@@ -44,17 +49,17 @@ namespace OctoView.Github.Repositories
 
 			foreach (var add in added)
 			{
-				var y = _context.Repositories.FirstOrDefault(x => x.FullName == add.FullName);
-				if (y != null)
+				var existingRepo = _context.Repositories.FirstOrDefault(x => x.FullName == add.FullName);
+				if (existingRepo != null)
 				{
-					add.Id = y.Id;
+					add.Id = existingRepo.Id;
 				}
 			}
 
 			var reposToAdd = added.Where(x => x.Id == 0).ToList();
 			if (reposToAdd.Any())
 			{
-				_context.Set<GithubRepository>().AddRange(reposToAdd);
+				_context.Repositories.AddRange(reposToAdd);
 				_context.SaveChanges();
 			}
 
