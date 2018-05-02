@@ -240,7 +240,7 @@ _Pvt_Extensions
 .fake/
 
 
-/OctoView.Web/wwwroot/dist/main.js
-/OctoView.Web/wwwroot/dist/main.js.map
-/OctoView.Web/wwwroot/dist/site.css
-/OctoView.Web/wwwroot/dist/site.css.map
+OctoView.Web/wwwroot/dist/main.js
+OctoView.Web/wwwroot/dist/main.js.map
+OctoView.Web/wwwroot/dist/site.css
+OctoView.Web/wwwroot/dist/site.css.map
