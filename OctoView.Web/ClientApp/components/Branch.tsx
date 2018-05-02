@@ -27,7 +27,7 @@ React.Component<IBranch, any> {
 				       <div>{this.props.repo}</div>
 			       </div>;
 		}
-		return <div className="ov-c-branch">
+		return <div className="ov-c-branch ov-c-branch--opened">
 					<div className="ov-c-branch__left-indicator"></div>
 			    	<div className="ov-c-branch__name">{this.props.branchName}</div>
 					<div className="ov-c-branch__approval-indicator"></div>
