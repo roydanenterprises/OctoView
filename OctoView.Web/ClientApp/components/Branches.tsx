@@ -8,8 +8,6 @@ interface IBranches {
 	loading: boolean;
 }
 
-
-
 export class Branches extends React.Component<RouteComponentProps<{}>, IBranches> {
 	constructor() {
 		super();
@@ -37,7 +35,7 @@ export class Branches extends React.Component<RouteComponentProps<{}>, IBranches
 
 	private static renderBranches(branches: BranchComponent.IBranch[]) {
 		return <div>
-			{branches.map(branch => <BranchComponent.Branch layout="notTable" {...branch}/>)}
+			       {branches.map(branch => <BranchComponent.Branch layout="notTable" {...branch}/>)}
 		       </div>;
 	}
 }

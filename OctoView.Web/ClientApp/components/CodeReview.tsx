@@ -4,15 +4,29 @@ export interface ICodeReview {
 	name: string;
 	status: string;
 	url: string;
+	imgUrl: string;
+}
+
+export interface ICodeReviewState {
+	status : string;
 }
 
 export class CodeReview extends
-React.Component<ICodeReview, any> {
+	React.Component<ICodeReview, ICodeReviewState> {
+	constructor() {
+		super();
+		this.state = { status:this.props.status };
+	}
+	stateChange() {
+		this.setState({ status: 'Other State' });
+	}
 	render() {
+		console.log('rendered code review.');
 		return <div>
-			       <div>{this.props.name}}</div>
-			       <div>{this.props.status}}</div>
-			       <div>{this.props.url}}</div>
+			<button onClick={() => this.stateChange()}>Update State</button>
+			       <div>{this.props.name}</div>
+			       <div>{this.state.status}</div>
+			       <div>{this.props.url}</div>
 		       </div>;
 	}
 }

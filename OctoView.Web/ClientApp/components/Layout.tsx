@@ -6,8 +6,8 @@ export interface LayoutProps {
 
 export class Layout extends React.Component<LayoutProps, {}> {
     public render() {
-        return  <div className='row'> 
-                    { this.props.children }
-                </div>;
+	    return <div className='row'>
+		           { this.props.children }
+	           </div>;
     }
 }

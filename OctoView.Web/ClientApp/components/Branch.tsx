@@ -31,7 +31,7 @@ React.Component<IBranch, any> {
 			       <div>{this.props.branchName}</div>
 			       <div>
 				       {this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
-			       </div>;
+			       </div>
 		       </div>;
 	}
 }
