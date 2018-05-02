@@ -16,3 +16,4 @@ This allows for an easier and automated view of projects that span multiple repo
 1. Users can customize which repositories are examined
 2. Users can manually associate/group branches (eg, `feature/featureAbcdefg` and `feature/featureAbcdef` are the same 'project' and thus get shown together)
 3. Most information shown links to the Github source for that information (eg, PRs, reviews, branches, repos)
+
