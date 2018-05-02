@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 namespace OctoView.Github.Models
 {
-	public class GithubRepository
-	{
-		public string Owner { get; set; }
-		public string Name { get; set; }
-
-		public string FullName => $"{Owner}/{Name}";
-	}
-
 	public class GithubBranch
 	{
 		private List<GithubPull> _pulls;

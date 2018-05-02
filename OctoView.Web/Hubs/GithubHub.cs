@@ -1,27 +1,28 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using OctoView.Github.Models;
+using OctoView.Github.Services;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace OctoView.Web.Hubs
 {
 	public class GithubHub : Hub
 	{
-		private readonly IUserStore<ApplicationUser> _userStore;
+		private readonly IGithubService _githubService;
+		private readonly UserManager<ApplicationUser> _userManager;
 
-		public GithubHub(IUserStore<ApplicationUser> userStore)
+		public GithubHub(IGithubService githubService, UserManager<ApplicationUser> userManager)
 		{
-			_userStore = userStore;
+			_githubService = githubService;
+			_userManager = userManager;
 		}
+
 		public override async Task OnConnectedAsync()
 		{
-			var repositories =
-				(await _userStore.FindByNameAsync(Context.User.Identity.Name, new CancellationToken()))?.Repositories.Select(x =>
-					x.RepositoryName);
+			var repositories = _githubService.GetUserRepositories(_userManager.GetUserId(Context.User)).Select(x => x.FullName);
 
 			foreach (var repo in repositories)
 			{
@@ -34,11 +35,10 @@ namespace OctoView.Web.Hubs
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{
-			var repos =
-				(await _userStore.FindByNameAsync(Context.User.Identity.Name, new CancellationToken()))?.Repositories.Select(x =>
-					x.RepositoryName);
+			var repositories = _githubService.GetUserRepositories(_userManager.GetUserId(Context.User)).Select(x =>
+				x.FullName);
 
-			foreach (var repo in repos)
+			foreach (var repo in repositories)
 			{
 				await Groups.RemoveAsync(Context.ConnectionId, repo);
 			}

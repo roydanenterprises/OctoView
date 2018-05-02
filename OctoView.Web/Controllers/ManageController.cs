@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
 using System.Threading.Tasks;
 using TestApplicationReact.Extensions;
 using TestApplicationReact.Models.ManageViewModels;
@@ -74,7 +73,7 @@ namespace TestApplicationMvc.Controllers
 				HasPassword = user.PasswordHash != null,
 				AvailableRepositories = (await _githubService.GetAllRepositories(githubToken))?.Select(x => x.FullName).ToList() ?? new List<string>(),
 				GithubAccount = await _githubService.GetUsername(githubToken),
-				GithubRepositories = user.Repositories?.Select(x => x.RepositoryName).ToList() ?? new List<string>(),
+				GithubRepositories = _githubService.GetUserRepositories(user.Id)?.Select(x => x.FullName).ToList(),
 				Logins = await _userManager.GetLoginsAsync(user)
 			};
 
@@ -519,13 +518,13 @@ namespace TestApplicationMvc.Controllers
 
 			var allRepositories = (await _githubService.GetAllRepositories(githubToken)).Select(x => x.ToGithubRepository());
 
-			var userRepositories = (await _userStore.FindByIdAsync(user.Id, new CancellationToken()))?.Repositories?.ToList() ?? new List<ApplicationUserRepository>();
+			var userRepositories = _githubService.GetUserRepositories(user.Id);
 
 			var model = new UpdateGithubRepositoriesViewModel
 			{
 				RepositoryViewModels = allRepositories.Select(x =>
 				{
-					var userRepo = userRepositories.FirstOrDefault(y => y.RepositoryName == x.FullName);
+					var userRepo = userRepositories.FirstOrDefault(y => y.FullName == x.FullName);
 
 					return new GithubRepositoryViewModel
 					{
@@ -555,15 +554,9 @@ namespace TestApplicationMvc.Controllers
 				throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 			}
 
-			user.Repositories = model.RepositoryViewModels.Where(x => x.IsSelected).Select(x => new ApplicationUserRepository
-			{
-				Id = x.Id ?? 0,
-				RepositoryName = $"{x.Owner}/{x.Name}"
-			}).ToList();
+			var result = _githubService.UpdateUserRepositories(user.Id, model.RepositoryViewModels.Where(x => x.IsSelected).Select(x => x.ToGithubRepository()));
 
-			var result = await _userStore.UpdateAsync(user, new CancellationToken());
-
-			if (result.Succeeded)
+			if (result)
 			{
 				return RedirectToAction("Index");
 			}
