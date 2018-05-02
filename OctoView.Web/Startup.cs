@@ -32,7 +32,17 @@ namespace TestApplication
 			services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDbContext<GithubCacheContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddIdentity<ApplicationUser, IdentityRole>()
+			services.AddIdentity<ApplicationUser, IdentityRole>(x =>
+			                                                    {
+				                                                    x.User.RequireUniqueEmail = true;
+				                                                    x.Password.RequiredLength = 6;
+				                                                    x.Password.RequireNonAlphanumeric = false;
+				                                                    x.Password.RequireDigit = false;
+				                                                    x.Password.RequireLowercase = false;
+				                                                    x.Password.RequireUppercase = false;
+				                                                    x.Lockout.MaxFailedAccessAttempts = 5;
+				                                                    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+			                                                    })
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
