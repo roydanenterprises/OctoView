@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using OctoView.Github.Models;
 using OctoView.Github.Services;
 using OctoView.Web.Helpers;
 using OctoView.Web.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -30,67 +28,6 @@ namespace OctoView.Web.Controllers
 			_userManager = userManager;
 			_githubService = githubService;
 			_configuration = configuration;
-		}
-
-		[HttpGet("fakeBranches")]
-		public object GetBranchesFake()
-		{
-			return new List<GithubBranch>
-			{
-				new GithubBranch
-				{
-					Repo = "Cool Stuff",
-					BranchName = "feature/testing1",
-					Pulls = new List<GithubPull>
-					{
-						new GithubPull
-						{
-							Name = "implement testing1 feature.",
-							Number = 125,
-							Status = "Open",
-							Reviews = new List<GithubReview>()
-						}
-					}
-				},
-				new GithubBranch
-				{
-					Repo = "Cool Stuff In other Repo",
-					BranchName = "feature/testing1",
-					Pulls = new List<GithubPull>
-					{
-						new GithubPull
-						{
-							Name = "implement testing1 feature.",
-							Number = 127,
-							Status = "Open",
-							Reviews = new List<GithubReview>()
-						}
-					}
-				},
-				new GithubBranch
-				{
-					Repo = "Not Very cool Stuff Stuff",
-					BranchName = "feature/testing2",
-					Pulls = new List<GithubPull>
-					{
-						new GithubPull
-						{
-							Name = "implement testing2 feature.",
-							Number = 34,
-							Status = "Open",
-							Reviews = new List<GithubReview>()
-							{
-								new GithubReview()
-								{
-									Name = "This guy",
-									Status = "Declined",
-									Url = "http://www.google.com"
-								}
-							}
-						}
-					}
-				}
-			};
 		}
 
 		[HttpGet("branches")]
