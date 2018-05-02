@@ -2,21 +2,25 @@ import * as React from 'react';
 
 export interface ICodeReview {
 	name: string;
-	status: string;
-	url: string;
-	imgUrl: string;
+	status?: string;
+	url?: string;
+	imgUrl?: string;
 }
 
 export interface ICodeReviewState {
-	status : string;
+	status? : string;
 }
 
 export class CodeReview extends
 	React.Component<ICodeReview, ICodeReviewState> {
 	constructor() {
 		super();
-		this.state = { status:this.props.status };
 	}
+
+	componentWillMount() {
+		this.setState({ status: this.props.status });
+	}
+
 	stateChange() {
 		this.setState({ status: 'Other State' });
 	}

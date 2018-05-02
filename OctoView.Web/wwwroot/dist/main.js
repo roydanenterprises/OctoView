@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "42858fb79206f456aef9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9ac61fe0287aea3fb4b3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -7814,10 +7814,11 @@ var __extends = (this && this.__extends) || (function () {
 var CodeReview = (function (_super) {
     __extends(CodeReview, _super);
     function CodeReview() {
-        var _this = _super.call(this) || this;
-        _this.state = { status: _this.props.status };
-        return _this;
+        return _super.call(this) || this;
     }
+    CodeReview.prototype.componentWillMount = function () {
+        this.setState({ status: this.props.status });
+    };
     CodeReview.prototype.stateChange = function () {
         this.setState({ status: 'Other State' });
     };

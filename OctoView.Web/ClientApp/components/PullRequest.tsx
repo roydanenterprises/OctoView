@@ -11,6 +11,7 @@ export interface IPullRequest {
 
 export class PullRequest extends
 React.Component<IPullRequest, any> {
+
 	render() {
 		console.log('rendered pull request.');
 
