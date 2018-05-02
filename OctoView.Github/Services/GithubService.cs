@@ -174,6 +174,7 @@ namespace OctoView.Github.Services
 				Number = pull.Number,
 				Status = pull.State.StringValue,
 				Url = pull.HtmlUrl,
+				Assignee = pull.Assignee.Login,
 				Reviews = reviewers?.Select(x =>
 																		{
 																			var review = pullReviews?.Where(y => y.User.Login == x)
@@ -184,12 +185,14 @@ namespace OctoView.Github.Services
 																			{
 																				Name = x,
 																				Url = review?.HtmlUrl,
-																				Status = review?.State.StringValue
+																				Status = review?.State.StringValue,
+																				AvatarUrl = review?.User.AvatarUrl
 																			};
 																		}).Union(pull.RequestedReviewers.Select(x => new GithubReview
 																		{
 																			Name = x.Login,
-																			Status = "PENDING"
+																			Status = "PENDING",
+																			AvatarUrl = x.AvatarUrl
 																		})).ToList()
 			};
 		}
@@ -298,12 +301,14 @@ namespace OctoView.Github.Services
 				Number = pull.Number,
 				Status = pull.State.StringValue,
 				Url = pull.HtmlUrl,
+				Assignee = pull.Assignee.Login,
 				Reviews = pull
 					.RequestedReviewers
 					.Select(x => new GithubReview
 					{
 						Name = x.Login,
-						Status = "PENDING"
+						Status = "PENDING",
+						AvatarUrl = x.AvatarUrl
 					})
 					.ToList()
 			};
@@ -334,7 +339,8 @@ namespace OctoView.Github.Services
 			{
 				Name = review.User.Login,
 				Status = review.State.StringValue.ToUpper(),
-				Url = review.HtmlUrl
+				Url = review.HtmlUrl,
+				AvatarUrl = review.User.AvatarUrl
 			};
 
 			var repoName = pull.Head.Repository.FullName;
