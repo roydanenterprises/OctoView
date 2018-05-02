@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace OctoView.Github.Models
 {
+	public class GithubUser
+	{
+		[JsonProperty("username")] public string Username { get; set; }
+		[JsonProperty("avatarUrl")] public string AvatarUrl { get; set; }
+	}
+
 	public class GithubBranch
 	{
 		private List<GithubPull> _pulls;

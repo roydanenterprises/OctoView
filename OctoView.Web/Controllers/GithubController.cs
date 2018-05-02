@@ -48,6 +48,19 @@ namespace OctoView.Web.Controllers
 			return result;
 		}
 
+		[HttpGet("user")]
+		public async Task<object> GetUser()
+		{
+			var user = await _userManager.GetUserAsync(User);
+			var claims = await _userManager.GetClaimsAsync(user);
+
+			var token = claims.FirstOrDefault(x => x.Type == "GithubAccessToken")?.Value;
+
+			var result = await _githubService.GetUser(token);
+
+			return result;
+		}
+
 		[HttpGet("BeginOauth")]
 		public ActionResult BeginOauth()
 		{
