@@ -14,24 +14,27 @@ interface IBranches {
 }
 
 interface IGithubUser {
-	name: string;
+	username: string;
+	avatarUrl: string;
 }
 
 export class Branches extends React.Component<RouteComponentProps<{}>, IBranches> {
 	constructor() {
 		super();
-		this.state = { branches: [], loading: true, filter: "noFilter", user : { name: "" }};
+		this.state = { branches: [], loading: true, filter: "noFilter", user: { username: "", avatarUrl:"" }};
+	}
 
-		fetch('api/github/branches', {credentials: 'same-origin'})
+	componentWillMount() {
+		fetch('api/github/branches', { credentials: 'same-origin' })
 			.then(response => response.json() as Promise<BranchComponent.IBranch[]>)
 			.then(data => {
 				this.setState({ branches: data, loading: false });
 			});
-		fetch('api/github/user')
+		fetch('api/github/user', { credentials: 'same-origin' })
 			.then(response => response.json() as Promise<IGithubUser>)
-				.then(data => {
-					this.setState({ user: data});
-				});
+			.then(data => {
+				this.setState({ user: data });
+			});
 	}
 
 	handleFilterChange(changeEvent: { target: HTMLInputElement; }) {
@@ -41,13 +44,13 @@ export class Branches extends React.Component<RouteComponentProps<{}>, IBranches
 	}
 
 	renderBranches() {
-		let localBranches = this.state.branches
+		let localBranches = this.state.branches;
 		if (this.state.filter === 'assignToMe') {
 			localBranches = localBranches.filter(branch => {
-				branch.pulls.some(pull => pull.assignee === this.state.user.name)
-			})
+				return branch.pulls.some(pull => pull.assignee === this.state.user.username);
+			});
 		}
-		return < div >
+		return <div>
 					{localBranches.map(branch => <BranchComponent.Branch layout="notTable" {...branch} />)}
 				</div >;
 

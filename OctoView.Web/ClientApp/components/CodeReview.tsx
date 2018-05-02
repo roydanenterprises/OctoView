@@ -30,7 +30,8 @@ export class CodeReview extends
 			<button onClick={() => this.stateChange()}>Update State</button>
 			       <div>{this.props.name}</div>
 			       <div>{this.state.status}</div>
-			       <div>{this.props.url}</div>
+			<div>{this.props.url}</div>
+			<div><img height="50px" width="50px" src={this.props.avatarUrl} /></div>
 		       </div>;
 	}
 }
