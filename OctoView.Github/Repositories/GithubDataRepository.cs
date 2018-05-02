@@ -3,7 +3,6 @@ using OctoView.Github.Contexts.Models;
 using OctoView.Github.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OctoView.Github.Repositories
 {
@@ -40,13 +39,10 @@ namespace OctoView.Github.Repositories
 				_context.Set<GithubRepository>().AddRange(reposToAdd);
 			}
 
-			_context.Set<UserRepository>().RemoveRange(deleted.Select(x => new UserRepository{ UserId = userId, RepositoryId = x.Id }));
-			
+			_context.Set<UserRepository>().AddRange(added.Select(x => new UserRepository { UserId = userId, RepositoryId = x.Id }));
+			_context.Set<UserRepository>().RemoveRange(deleted.Select(x => new UserRepository { UserId = userId, RepositoryId = x.Id }));
 
-			//deleted.ForEach(x => existingList.Remove(x));
-			//_context.Set<GithubRepository>().Remo
-
-			throw new System.NotImplementedException();
+			return true;
 		}
 	}
 }

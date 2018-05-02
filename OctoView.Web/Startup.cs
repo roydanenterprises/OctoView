@@ -12,6 +12,7 @@ using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
 using System.Linq;
+using OctoView.Github.Repositories;
 using TestApplicationReact.Data;
 using TestApplicationReact.Services;
 
@@ -49,6 +50,7 @@ namespace TestApplication
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<IGithubService, GithubService>();
+			services.AddTransient<IGithubDataRepository, GithubDataRepository>();
 			services.AddTransient<ICache, GithubRequestCacheService>();
 			services.AddMvc().AddSessionStateTempDataProvider();
 			services.AddSession();
