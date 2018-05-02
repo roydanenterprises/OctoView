@@ -27,7 +27,7 @@ React.Component<IBranch, any> {
 				       <div>{this.props.repo}</div>
 			       </div>;
 		}
-		return <div>
+		return <div className="ov-c-branch">
 			       <div>{this.props.branchName}</div>
 			       <div>
 				       {this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
