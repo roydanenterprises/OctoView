@@ -4,13 +4,20 @@
 .ov-c-branch {
     display: grid;
     grid-template-columns: 10px auto 150px;
-    grid-template-rows: auto 20px;
+    grid-template-rows: auto 23px;
     grid-template-areas:
         "unread header indicator"
         "unread drawer drawer";
     margin: 1em 0 1.25em 10px;
     border-radius: $border-radius;
-    @include grid-card-bottom();
+}
+
+.ov-c-branch--opened {
+    grid-template-rows: auto 23px auto;
+    grid-template-areas:
+        "unread header indicator"
+        "unread drawer drawer"
+        ". drawer drawer";
 }
 
 .ov-c-branch--unread, .ov-c-branch--blocked, .ov-c-branch--approved {
@@ -26,6 +33,7 @@
     grid-area: unread;
     border-top-left-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
+    @include grid-card-bottom();
 }
 
 @mixin indicator-background($base-color) {
@@ -61,8 +69,13 @@
     border-top-left-radius: $border-radius;
     background: mix($card-background, $card-text, 95);
     box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 90);
+    @include grid-card-bottom();
 }
 
 .ov-c-branch__pull-request-drawer-contents {
     display: none;
+}
+
+.ov-c-branch--opened .ov-c-branch__pull-request-drawer-contents {
+    display: inherit;
 }
