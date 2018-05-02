@@ -10,6 +10,7 @@
         "unread drawer drawer";
     margin: 1em 0 1.25em 10px;
     border-radius: $border-radius;
+    cursor: pointer;
 }
 
 .ov-c-branch--opened {
@@ -70,6 +71,7 @@
     background: mix($card-background, $card-text, 95);
     box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 90);
     @include grid-card-bottom();
+    transition: all 0.2s ease;
 }
 
 .ov-c-branch__pull-request-drawer-contents {
@@ -78,4 +80,9 @@
 
 .ov-c-branch--opened .ov-c-branch__pull-request-drawer-contents {
     display: inherit;
+}
+
+.ov-c-branch:hover .ov-c-branch__pull-request-drawer {
+    background: mix($card-background, $card-text, 85);
+    box-shadow: inset 0px 5px 5px mix($card-background, $card-text, 80);
 }
