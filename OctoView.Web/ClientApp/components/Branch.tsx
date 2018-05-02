@@ -8,6 +8,10 @@ export interface IBranch {
 	pulls: IPullRequest[];
 }
 
+export interface IBranchState {
+	isOpen: boolean;
+}
+
 /*export const Feature: React.SFC<IFeature> = (props) => {
 	if (props.layout === "table") {
 		return <div>
@@ -20,17 +24,23 @@ export interface IBranch {
 };*/
 
 export class Branch extends
-React.Component<IBranch, any> {
+	React.Component<IBranch, any> {
+	componentWillMount() {
+		this.setState({ isOpen: false});
+	}
+	toggleState() {
+		this.setState({ isOpen: !this.state.isOpen });
+	}
 	render() {
 		if (this.props.layout === 'table') {
 			return <div>
 				       <div>{this.props.repo}</div>
 			       </div>;
 		}
-		return <div className="ov-c-branch ov-c-branch--opened">
+		return <div onClick={() => this.toggleState()} className={"ov-c-branch " + this.state.isOpened ?"ov-c-branch--opened" : ""}>
 					<div className="ov-c-branch__left-indicator"></div>
 			    	<div className="ov-c-branch__name">{this.props.branchName}</div>
-					<div className="ov-c-branch__approval-indicator"></div>
+			<div className="ov-c-branch__approval-indicator"></div>
 			    	<div className="ov-c-branch__pull-request-drawer">
 						<div className="ov-c-branch__pull-request-drawer-contents">
 							{this.props.pulls.map(pulls => <PullRequest {...pulls}/>)}
