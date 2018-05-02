@@ -5,6 +5,7 @@ export interface IPullRequest {
 	name: string;
 	number: number;
 	status: string;
+	url: string;
 	assignedTo: string;
 	reviews: ICodeReview[];
 }
@@ -15,9 +16,12 @@ React.Component<IPullRequest, any> {
 	render() {
 		console.log('rendered pull request.');
 
-		return <div>
-			       <div>{this.props.name}</div>
-			       <div>{this.props.number}</div>
+		return <div className="ov-c-pull-request">
+				   <div>
+						<a href={this.props.url}>
+					   		{this.props.name} <span className="ov-c-pull-request__number">{this.props.number}</span>
+						</a>
+					</div>
 			       <div>
 				       {this.props.reviews.map(review => <CodeReview {...review}/>)}
 			       </div>
