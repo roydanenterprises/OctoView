@@ -12,6 +12,7 @@ using OctoView.Github.Services.GithubRequestCache;
 using OctoView.Web.Hubs;
 using OctoView.Web.Models;
 using System;
+using System.IO;
 using System.Linq;
 using TestApplicationReact.Data;
 using TestApplicationReact.Services;
@@ -20,9 +21,20 @@ namespace TestApplication
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IHostingEnvironment env)
 		{
-			Configuration = configuration;
+			var builder = new ConfigurationBuilder();
+
+			builder
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json");
+
+			if (env.IsDevelopment())
+			{
+				builder.AddUserSecrets<Startup>();
+			}
+
+			Configuration = builder.Build();
 		}
 
 		public IConfiguration Configuration { get; }
@@ -30,9 +42,11 @@ namespace TestApplication
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-			services.AddDbContext<GithubCacheContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-			services.AddTransient(x => new DbContextOptionsBuilder<GithubCacheContext>().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).Options);
+			var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+			services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(connectionString));
+			services.AddDbContext<GithubCacheContext>(x => x.UseSqlServer(connectionString));
+			services.AddTransient(x => new DbContextOptionsBuilder<GithubCacheContext>().UseSqlServer(connectionString).Options);
 
 			services.AddIdentity<ApplicationUser, IdentityRole>(x =>
 																													{
