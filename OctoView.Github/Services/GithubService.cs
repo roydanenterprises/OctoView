@@ -114,6 +114,16 @@ namespace OctoView.Github.Services
 			{
 				return null;
 			}
+
+			var t = await GitHubClient(accessToken).Repository.Hooks
+				.GetAll("kingofzeal", "GithubDashboard");
+				//.Create("owner", "name", new NewRepositoryWebHook("webhook",
+				//	new Dictionary<string, string>
+				//	{
+				//		{"content_type", "json"}
+				//	},
+				//	"url"));
+
 			return await GitHubClient(accessToken).Repository.GetAllForCurrent(ApiOptions);
 		}
 
